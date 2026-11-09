@@ -1,0 +1,15 @@
+{
+  "name": "رؤية",
+  "tagline": "للمحاماة والاستشارات القانونية",
+  "logo": "",
+  "logoShowName": true,
+  "favicon": "",
+  "colors": {
+    "primary": "#0b1c2c",
+    "accent": "#c9a45c",
+    "background": "#f7f4ee",
+    "whatsapp": "#25d366"
+  },
+  "footerAbout": "مكتب محاماة سعودي يقدّم خدمات الترافع والاستشارات القانونية للأفراد والشركات في جميع مناطق المملكة.",
+  "license": "000000"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "law-firm-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "قالب موقع ثابت لمكاتب المحاماة — محتوى يُدار عبر Pages CMS ويُنشر على Cloudflare Pages",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --serve"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

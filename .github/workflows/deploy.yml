@@ -1,0 +1,40 @@
+# نشر إلى مشروع Cloudflare Pages من نوع «الرفع المباشر» (Direct Upload).
+# يعمل فقط إذا عُرّف المتغير CF_PAGES_PROJECT في إعدادات المستودع؛
+# المستودعات المربوطة بـ Cloudflare عبر Git integration لا تحتاجه ويبقى متوقفاً فيها.
+#
+# المطلوب في Settings → Secrets and variables → Actions:
+#   Variables:  CF_PAGES_PROJECT        اسم مشروع Pages (مثال: roeya)
+#   Secrets:    CLOUDFLARE_API_TOKEN    رمز بصلاحية Account → Cloudflare Pages → Edit
+#               CLOUDFLARE_ACCOUNT_ID   معرّف حساب Cloudflare
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.CF_PAGES_PROJECT != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build
+        run: node build.js
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CF_PAGES_PROJECT }} --branch=main
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

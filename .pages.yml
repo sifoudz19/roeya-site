@@ -1,0 +1,279 @@
+# إعداد لوحة الإدارة (Pages CMS) — https://app.pagescms.org
+# كل قسم هنا يعدّل ملفاً واحداً في مجلد content، وكل حفظ = commit = نشر تلقائي.
+
+media:
+  input: media
+  output: /media
+  categories: [image]
+
+settings:
+  hide: true
+
+content:
+  # ───────────────────────── الهوية ─────────────────────────
+  - name: identity
+    label: "١. الهوية والألوان"
+    type: file
+    path: content/identity.json
+    format: json
+    fields:
+      - { name: name, label: "اسم المكتب / الشركة", type: string, required: true }
+      - { name: tagline, label: "الوصف المختصر تحت الاسم", type: string, description: "مثال: للمحاماة والاستشارات القانونية" }
+      - { name: logo, label: "الشعار (صورة)", type: image, description: "اختياري. PNG أو SVG بخلفية شفافة ويُفضّل أن يكون فاتح اللون. إن تُرك فارغاً يظهر الشعار الافتراضي." }
+      - { name: logoShowName, label: "إظهار اسم المكتب بجانب صورة الشعار", type: boolean }
+      - { name: favicon, label: "أيقونة المتصفح (Favicon)", type: image, description: "اختياري. صورة مربعة صغيرة." }
+      - name: colors
+        label: "ألوان الهوية البصرية"
+        type: object
+        fields:
+          - name: primary
+            label: "اللون الأساسي (داكن)"
+            type: string
+            description: "لون الخلفيات الداكنة والعناوين. يجب أن يكون داكناً. الصيغة: #0b1c2c"
+            pattern: { regex: "^#[0-9a-fA-F]{6}$", message: "اكتب اللون بصيغة ست خانات مثل ‎#0b1c2c" }
+          - name: accent
+            label: "لون التمييز"
+            type: string
+            description: "لون الأزرار الثانوية والخطوط المميزة. الصيغة: #c9a45c"
+            pattern: { regex: "^#[0-9a-fA-F]{6}$", message: "اكتب اللون بصيغة ست خانات مثل ‎#c9a45c" }
+          - name: background
+            label: "لون خلفية الصفحة (فاتح)"
+            type: string
+            description: "الصيغة: #f7f4ee"
+            pattern: { regex: "^#[0-9a-fA-F]{6}$", message: "اكتب اللون بصيغة ست خانات مثل ‎#f7f4ee" }
+          - name: whatsapp
+            label: "لون أزرار واتساب"
+            type: string
+            description: "الافتراضي: #25d366"
+            pattern: { regex: "^#[0-9a-fA-F]{6}$", message: "اكتب اللون بصيغة ست خانات مثل ‎#25d366" }
+      - { name: footerAbout, label: "نبذة أسفل الصفحة (الفوتر)", type: text }
+      - { name: license, label: "رقم ترخيص وزارة العدل", type: string, description: "يظهر أسفل الصفحة. اتركه فارغاً لإخفائه." }
+
+  # ───────────────────────── الواجهة ─────────────────────────
+  - name: hero
+    label: "٢. الواجهة الرئيسية"
+    type: file
+    path: content/hero.json
+    format: json
+    fields:
+      - { name: eyebrow, label: "الشارة أعلى العنوان", type: string }
+      - { name: title, label: "العنوان الرئيسي", type: text, required: true, description: "ضع الكلمة المراد تلوينها بين نجمتين مثل *حقوقك*، وكل سطر جديد يظهر كسطر مستقل." }
+      - { name: lead, label: "الوصف التعريفي", type: text }
+      - { name: primaryButton, label: "نص زر واتساب", type: string }
+      - { name: secondaryButton, label: "نص الزر الثاني", type: string }
+      - { name: image, label: "صورة خلفية الواجهة", type: image, description: "اختياري. تُعرض خلف العنوان مع تعتيم بلون الهوية." }
+      - { name: trust, label: "نقاط الثقة", type: string, list: { max: 4 } }
+      - name: card
+        label: "بطاقة «كيف تبدأ معنا؟»"
+        type: object
+        fields:
+          - { name: title, label: "عنوان البطاقة", type: string }
+          - { name: text, label: "وصف البطاقة", type: string }
+          - { name: button, label: "نص الزر", type: string }
+          - name: steps
+            label: "الخطوات"
+            type: object
+            list: { max: 4, collapsible: { summary: "{title}" } }
+            fields:
+              - { name: title, label: "عنوان الخطوة", type: string }
+              - { name: text, label: "الشرح", type: string }
+
+  # ───────────────────────── الإحصائيات ─────────────────────────
+  - name: stats
+    label: "٣. الإحصائيات"
+    type: file
+    path: content/stats.json
+    format: json
+    fields:
+      - { name: show, label: "إظهار شريط الإحصائيات", type: boolean }
+      - name: items
+        label: "الأرقام"
+        type: object
+        list: { max: 4, collapsible: { summary: "{label}" } }
+        fields:
+          - { name: number, label: "الرقم", type: number, required: true }
+          - { name: symbol, label: "الرمز بجانب الرقم", type: string, description: "مثل + أو %. اتركه فارغاً لعرض الرقم وحده.", options: { maxlength: 2 } }
+          - { name: label, label: "الوصف", type: string, required: true }
+
+  # ───────────────────────── من نحن ─────────────────────────
+  - name: about
+    label: "٤. من نحن"
+    type: file
+    path: content/about.json
+    format: json
+    fields:
+      - { name: kicker, label: "العنوان الصغير", type: string }
+      - { name: title, label: "العنوان", type: string, required: true }
+      - { name: body, label: "النص التعريفي", type: text, description: "كل سطر جديد يظهر كفقرة مستقلة." }
+      - { name: quote, label: "الاقتباس داخل اللوحة", type: text }
+      - { name: quoteAuthor, label: "صاحب الاقتباس", type: string }
+      - { name: image, label: "صورة اللوحة", type: image, description: "اختياري. صورة للمكتب أو الفريق تظهر خلف الاقتباس." }
+      - name: values
+        label: "القيم"
+        type: object
+        list: { max: 4, collapsible: { summary: "{title}" } }
+        fields:
+          - &icon
+            name: icon
+            label: "الأيقونة"
+            type: select
+            options:
+              values:
+                - { name: scale, label: "ميزان العدالة" }
+                - { name: briefcase, label: "حقيبة أعمال" }
+                - { name: building, label: "مبنى / شركة" }
+                - { name: users, label: "أشخاص" }
+                - { name: heart, label: "قلب / أسرة" }
+                - { name: home, label: "منزل / عقار" }
+                - { name: doc, label: "مستند / عقد" }
+                - { name: shield, label: "درع / حماية" }
+                - { name: coins, label: "أموال" }
+                - { name: lock, label: "قفل / سرية" }
+                - { name: clock, label: "ساعة / وقت" }
+                - { name: eye, label: "عين / رؤية" }
+                - { name: target, label: "هدف" }
+                - { name: globe, label: "كرة أرضية / دولي" }
+          - { name: title, label: "العنوان", type: string, required: true }
+          - { name: text, label: "الوصف", type: string }
+
+  # ───────────────────────── الخدمات ─────────────────────────
+  - name: services
+    label: "٥. الخدمات القانونية"
+    type: file
+    path: content/services.json
+    format: json
+    fields:
+      - { name: kicker, label: "العنوان الصغير", type: string }
+      - { name: title, label: "عنوان القسم", type: string }
+      - { name: intro, label: "وصف القسم", type: text }
+      - name: items
+        label: "الخدمات"
+        description: "أضف خدمة جديدة أو احذف أو أعد الترتيب بالسحب. تظهر الخدمات أيضاً في قائمة «نوع الاستشارة»."
+        type: object
+        list: { min: 1, collapsible: { summary: "{title}" } }
+        fields:
+          - *icon
+          - { name: title, label: "اسم الخدمة", type: string, required: true }
+          - { name: text, label: "وصف الخدمة", type: text }
+
+  # ───────────────────────── لماذا نحن ─────────────────────────
+  - name: why
+    label: "٦. لماذا نحن"
+    type: file
+    path: content/why.json
+    format: json
+    fields:
+      - { name: navLabel, label: "اسم القسم في القائمة", type: string, description: "مثال: لماذا رؤية" }
+      - { name: kicker, label: "العنوان الصغير", type: string }
+      - { name: title, label: "عنوان القسم", type: string }
+      - { name: intro, label: "وصف القسم", type: text }
+      - name: items
+        label: "المميزات"
+        type: object
+        list: { max: 4, collapsible: { summary: "{title}" } }
+        fields:
+          - *icon
+          - { name: title, label: "العنوان", type: string, required: true }
+          - { name: text, label: "الوصف", type: string }
+
+  # ───────────────────────── الفريق ─────────────────────────
+  - name: team
+    label: "٧. فريق العمل"
+    type: file
+    path: content/team.json
+    format: json
+    fields:
+      - { name: show, label: "إظهار قسم فريق العمل", type: boolean }
+      - { name: kicker, label: "العنوان الصغير", type: string }
+      - { name: title, label: "عنوان القسم", type: string }
+      - { name: intro, label: "وصف القسم", type: text }
+      - name: members
+        label: "أعضاء الفريق"
+        type: object
+        list: { collapsible: { summary: "{name} — {role}" } }
+        fields:
+          - { name: name, label: "الاسم", type: string, required: true }
+          - { name: role, label: "المسمى الوظيفي", type: string }
+          - { name: bio, label: "نبذة مختصرة", type: text }
+          - { name: photo, label: "الصورة الشخصية", type: image, description: "اختياري. إن تُركت فارغة يظهر الحرف الأول من الاسم." }
+
+  # ───────────────────────── آراء العملاء ─────────────────────────
+  - name: testimonials
+    label: "٨. آراء العملاء"
+    type: file
+    path: content/testimonials.json
+    format: json
+    fields:
+      - { name: show, label: "إظهار قسم آراء العملاء", type: boolean }
+      - { name: kicker, label: "العنوان الصغير", type: string }
+      - { name: title, label: "عنوان القسم", type: string }
+      - { name: intro, label: "وصف القسم", type: text }
+      - name: items
+        label: "الآراء"
+        description: "انشر آراء عملاء حقيقيين فقط وبموافقتهم."
+        type: object
+        list: { collapsible: { summary: "{name}" } }
+        fields:
+          - { name: text, label: "نص الرأي", type: text, required: true }
+          - { name: name, label: "اسم العميل", type: string, required: true }
+          - { name: role, label: "الصفة / المدينة", type: string }
+          - { name: rating, label: "التقييم (1 إلى 5)", type: number, options: { min: 1, max: 5 } }
+
+  # ───────────────────────── التواصل ─────────────────────────
+  - name: contact
+    label: "٩. التواصل وحسابات التواصل الاجتماعي"
+    type: file
+    path: content/contact.json
+    format: json
+    fields:
+      - { name: whatsapp, label: "رقم الواتساب", type: string, required: true, description: "بالصيغة الدولية مثل ‎+966 5X XXX XXXX. كل أزرار الاستشارة في الموقع تفتح هذا الرقم." }
+      - { name: whatsappMessage, label: "الرسالة الجاهزة في واتساب", type: text }
+      - { name: phone, label: "رقم الهاتف", type: string, description: "بالصيغة الدولية مثل ‎+966 11 XXX XXXX" }
+      - { name: email, label: "البريد الإلكتروني", type: string }
+      - { name: address, label: "العنوان", type: string }
+      - { name: mapUrl, label: "رابط خرائط Google", type: string, description: "انسخ رابط «مشاركة» من خرائط Google. يبدأ بـ https://" }
+      - { name: hours, label: "ساعات العمل", type: string }
+      - name: social
+        label: "حسابات التواصل الاجتماعي"
+        description: "ضع الرابط الكامل (https://...) واترك ما لا تستخدمه فارغاً."
+        type: object
+        fields:
+          - { name: x, label: "إكس (تويتر)", type: string }
+          - { name: linkedin, label: "لينكد إن", type: string }
+          - { name: instagram, label: "إنستغرام", type: string }
+          - { name: snapchat, label: "سناب شات", type: string }
+          - { name: tiktok, label: "تيك توك", type: string }
+          - { name: youtube, label: "يوتيوب", type: string }
+          - { name: facebook, label: "فيسبوك", type: string }
+      - { name: kicker, label: "العنوان الصغير لقسم التواصل", type: string }
+      - { name: title, label: "عنوان قسم التواصل", type: string }
+      - { name: intro, label: "وصف قسم التواصل", type: text }
+      - name: cta
+        label: "شريط الدعوة للاستشارة"
+        type: object
+        fields:
+          - { name: title, label: "العنوان", type: string }
+          - { name: text, label: "الوصف", type: string }
+          - { name: button, label: "نص الزر", type: string }
+      - name: form
+        label: "نموذج طلب الاستشارة"
+        type: object
+        fields:
+          - { name: title, label: "العنوان", type: string }
+          - { name: text, label: "الوصف", type: string }
+          - { name: button, label: "نص الزر", type: string }
+
+  # ───────────────────────── SEO ─────────────────────────
+  - name: seo
+    label: "١٠. محركات البحث (SEO)"
+    type: file
+    path: content/seo.json
+    format: json
+    fields:
+      - { name: title, label: "عنوان الصفحة في نتائج البحث", type: string, description: "يُفضّل ألا يتجاوز 60 حرفاً.", options: { maxlength: 70 } }
+      - { name: description, label: "وصف الصفحة في نتائج البحث", type: text, description: "يُفضّل بين 120 و160 حرفاً.", options: { maxlength: 200 } }
+      - { name: keywords, label: "الكلمات المفتاحية", type: string, description: "مفصولة بفواصل." }
+      - { name: siteUrl, label: "رابط الموقع", type: string, description: "الرابط النهائي مثل https://example.com — يُستخدم في خريطة الموقع وروابط المشاركة." }
+      - { name: ogImage, label: "صورة المشاركة على وسائل التواصل", type: image, description: "المقاس المفضّل 1200×630." }
+      - { name: googleVerification, label: "رمز التحقق من Google Search Console", type: string, description: "اختياري." }
+      - { name: noindex, label: "إخفاء الموقع عن محركات البحث", type: boolean, description: "فعّله فقط أثناء التجهيز قبل الإطلاق." }
